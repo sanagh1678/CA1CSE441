@@ -1,0 +1,71 @@
+11902857
+Sana Khan
+#2nd Question 
+nano myfile.txt
+find / -name "myfile.txt"
+
+
+#1st Question
+
+#!/bin/bash
+
+file_count () {
+  local count=0
+  for file in "$@"; do
+    if [ -f "$file" ]; then
+      ((count++))
+    fi
+  done
+  echo "Number of regular files: $count"
+}
+
+for arg in "$@"; do
+  if [ -f "$arg" ]; then
+    echo "$arg is a regular file."
+    ls -l "$arg"
+  elif [ -d "$arg" ]; then
+    echo "$arg is a directory."
+    ls -l "$arg"
+  else
+    echo "$arg is another type of file."
+    ls -l "$arg"
+  fi
+done
+
+file_count "$@"
+
+
+#3rd Question
+
+#!/bin/bash
+
+# Check if the directory name is provided
+if [ "$#" -ne 1 ]; then
+  echo "ERROR: Please provide the directory name as an argument."
+  exit 1
+fi
+
+# Store the directory name
+dir=$1
+
+# Check if the directory exists
+if [ ! -d "$dir" ]; then
+  echo "ERROR: The specified directory does not exist."
+  exit 1
+fi
+
+# Remove all permissions for groups and others
+chmod o-rwx,g-rwx "$dir"
+
+# Set all permissions for the owner
+chmod u+rwx "$dir"
+
+# Loop through all files in the directory
+for file in "$dir"/*; do
+  # Remove all permissions for groups and others
+  chmod o-rwx,g-rwx "$file"
+
+  # Set all permissions for the owner
+  chmod u+rwx "$file"
+done
+
